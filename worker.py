@@ -5,6 +5,7 @@ from pprint import pprint
 
 class FLHWorker:
     base = "https://freelancehunt.com/"
+
     def __init__(self, project_url):
         self.url = project_url
 
@@ -35,18 +36,24 @@ class FLHWorker:
         return "[%s](%s)" % (name, href)
 
     def get_price(self):
-        span = self.find_by_class(self.parser, "span", "price-tag")
-        return span.text.strip()
-    
+        try:
+            span = self.find_by_class(self.parser, "span", "price-tag")
+            return span.text.strip()
+        except:
+            return "No Price"
+
     def get_status(self):
         col_md = self.find_by_class(self.parser, "div", "col-md-12")
         span = list(col_md.findAll("span"))[-1]
-        return span.text 
-    
+        return span.text
+
     def get_bids_count(self):
-        span = self.parser.find("span", id="bids_count")
-        return int(span.text)
-    
+        try:
+            span = self.parser.find("span", id="bids_count")
+            return int(span.text)
+        except:
+            return 0
+
 # URL = "https://freelancehunt.com/project/prokonsultirovatsya-ckeditor-django-napisanie/735354.html"
 
 # worker = FLHWorker(URL)
